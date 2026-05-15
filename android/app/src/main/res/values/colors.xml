@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light mode splash background - matches your SplashScreen -->
+    <color name="splash_background">#FAFAFA</color>
+    
+    <!-- Primary color for icon tint (optional) -->
+    <color name="splash_primary">#2196F3</color>
+	<color name="ic_launcher_background">#ffffff</color>
+
+    <!-- Notification icon tint color -->
+    <color name="notification_color">#2196F3</color>
+</resources>

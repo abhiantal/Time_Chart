@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<!-- ============================================================ -->
+		<!-- FLUTTER / IMPELLER SETTINGS -->
+		<!-- ============================================================ -->
+		<key>FLTEnableImpeller</key>
+		<false/>
+		<!-- Performance optimization -->
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+		<true/>
+		<!-- ============================================================ -->
+		<!-- BASIC BUNDLE INFO -->
+		<!-- ============================================================ -->
+		<key>CFBundleDevelopmentRegion</key>
+		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>CFBundleDisplayName</key>
+		<string>Time Chart</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>Time Chart</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(FLUTTER_BUILD_NAME)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleVersion</key>
+		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<!-- ============================================================ -->
+		<!-- SUPPORTED LOCALIZATIONS -->
+		<!-- ============================================================ -->
+		<key>CFBundleLocalizations</key>
+		<array>
+			<string>en</string>
+			<string>hi</string>
+		</array>
+		<!-- ============================================================ -->
+		<!-- DEEP LINKING (Supabase + Google Sign-In) -->
+		<!-- ============================================================ -->
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>io.supabase.timechart</string>
+					<string>com.googleusercontent.apps.648047579890-123a5lpbigsgtvgf0q6jg1tp5jjek88e</string>
+					<string>com.timechart.app</string>
+				</array>
+			</dict>
+		</array>
+		<!-- ============================================================ -->
+		<!-- QUERY SCHEMES -->
+		<!-- ============================================================ -->
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>sms</string>
+			<string>tel</string>
+			<string>http</string>
+			<string>https</string>
+			<string>mailto</string>
+			<string>maps</string>
+			<string>comgooglemaps</string>
+		</array>
+		<!-- ============================================================ -->
+		<!-- iOS DEVICE REQUIREMENT -->
+		<!-- ============================================================ -->
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
+		<!-- ============================================================ -->
+		<!-- NETWORK SECURITY -->
+		<!-- ============================================================ -->
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+		</dict>
+		<!-- ============================================================ -->
+		<!-- PERMISSIONS DESCRIPTIONS -->
+		<!-- ============================================================ -->
+		<!-- Camera -->
+		<key>NSCameraUsageDescription</key>
+		<string>Time Chart needs camera access to capture photos and videos for your posts and profile.</string>
+		<!-- Microphone -->
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Time Chart needs microphone access for recording audio and video content.</string>
+		<!-- Photo Library -->
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Time Chart needs photo library access to choose and upload media to your posts.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>Time Chart needs access to save photos and videos to your library.</string>
+		<!-- Motion/Activity -->
+		<key>NSMotionUsageDescription</key>
+		<string>Time Chart uses motion data to enhance your user experience.</string>
+		<!-- Location (Optional - if you use maps/location features) -->
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Time Chart needs location access to show nearby content and tag your posts.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>Time Chart needs location access to provide location-based features.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>Time Chart needs location access to provide location-based features even when the app is in background.</string>
+		<!-- Notifications (REQUIRED FOR PUSH NOTIFICATIONS) -->
+		<key>NSUserNotificationsUsageDescription</key>
+		<string>Time Chart needs notification permission to send you important updates, messages, and reminders.</string>
+		<!-- Contacts (if you have contact sync feature) -->
+		<key>NSContactsUsageDescription</key>
+		<string>Time Chart needs access to your contacts to help you find friends on the app.</string>
+		<!-- ============================================================ -->
+		<!-- FIREBASE CONFIGURATION -->
+		<!-- ============================================================ -->
+		<!-- Disable Firebase App Delegate Proxy (Required for manual setup) -->
+		<key>FirebaseAppDelegateProxyEnabled</key>
+		<false/>
+		<!-- Enable Firebase Cloud Messaging -->
+		<key>FirebaseMessagingAutoInitEnabled</key>
+		<true/>
+		<!-- Enable Firebase Analytics Auto Collection -->
+		<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+		<true/>
+		<!-- ============================================================ -->
+		<!-- BACKGROUND MODES (REQUIRED FOR NOTIFICATIONS) -->
+		<!-- ============================================================ -->
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+			<string>processing</string>
+		</array>
+		<!-- ============================================================ -->
+		<!-- UI CONFIGURATION -->
+		<!-- ============================================================ -->
+		<!-- Launch Screen -->
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
+		<!-- Status Bar -->
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false/>
+		<key>UIStatusBarHidden</key>
+		<true/>
+		<!-- System capabilities -->
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true/>
+		<!-- ============================================================ -->
+		<!-- SUPPORTED ORIENTATIONS -->
+		<!-- ============================================================ -->
+		<!-- iPhone -->
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<!-- iPad -->
+		<key>UISupportedInterfaceOrientations~ipad</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<!-- ============================================================ -->
+		<!-- ADDITIONAL iOS 14+ SETTINGS -->
+		<!-- ============================================================ -->
+		<!-- App Tracking Transparency (if you use analytics/ads) -->
+		<key>NSUserTrackingUsageDescription</key>
+		<string>This helps us provide you with personalized content and improve your experience.</string>
+		<!-- Face ID (if you use biometric authentication) -->
+		<key>NSFaceIDUsageDescription</key>
+		<string>Time Chart uses Face ID to securely authenticate and protect your account.</string>
+		<!-- ============================================================ -->
+		<!-- APPLE PUSH NOTIFICATION SERVICE (APNs) -->
+		<!-- ============================================================ -->
+		<!-- This is automatically handled, but you can add custom sound files -->
+		<!-- Place sound files in ios/Runner/Resources/ -->
+		<!-- Reference them in notification payload as "sound": "notification.wav" -->
+	</dict>
+</plist>

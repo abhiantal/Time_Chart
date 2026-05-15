@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "648047579890",
+    "project_id": "time-chat-aa11",
+    "storage_bucket": "time-chat-aa11.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648047579890:android:c3d5b1d33a341f4aa6f66b",
+        "android_client_info": {
+          "package_name": "com.timechart.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648047579890-33i6heu9k4ucbmgqt1tshulctjmt385a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.timechart.app",
+            "certificate_hash": "a162dd0952b85d1abd3dfb245193eddd8fd68e8e"
+          }
+        },
+        {
+          "client_id": "648047579890-7tlapi6fmsnbun81udlbveoj8391tt3q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.timechart.app",
+            "certificate_hash": "bd2c908e564f87c447cf4d786e7ab643763bbf45"
+          }
+        },
+        {
+          "client_id": "648047579890-gvmmo38jkanhkisrs7fq07n25kdi4g8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMRqoqMXvNHlwVdRJFwanOOOwFWeySPaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648047579890-gvmmo38jkanhkisrs7fq07n25kdi4g8t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "648047579890-123a5lpbigsgtvgf0q6jg1tp5jjek88e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.timechart.app",
+                "app_store_id": "8279559695"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

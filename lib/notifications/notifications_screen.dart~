@@ -1,0 +1,411 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'dart:ui';
+
+import 'package:the_time_chart/notifications/presentation/providers/notification_provider.dart';
+import 'package:the_time_chart/notifications/presentation/widgets/notification_item.dart';
+import 'package:the_time_chart/widgets/app_snackbar.dart';
+import 'package:the_time_chart/widgets/circular_progress_indicator.dart';
+
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<NotificationProvider>().loadNotifications();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const NotificationsView();
+  }
+}
+
+class NotificationsView extends StatefulWidget {
+  const NotificationsView({super.key});
+
+  @override
+  State<NotificationsView> createState() => _NotificationsViewState();
+}
+
+class _NotificationsViewState extends State<NotificationsView> {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final provider = context.watch<NotificationProvider>();
+
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+ 
+        title: Text(
+          'Notifications',
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w900,
+            fontSize: 20,
+            letterSpacing: -0.5,
+            color: theme.colorScheme.onSurface,
+          ),
+        ),
+        actions: [
+          if (provider.notifications.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                onPressed: () => _confirmClearAll(context, provider),
+                icon: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.error.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.delete_sweep_outlined,
+                    size: 20,
+                    color: theme.colorScheme.error,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          // Premium Background Decor
+          _buildBackgroundDecor(context),
+
+          if (provider.isLoading && provider.notifications.isEmpty)
+            const Center(
+              child: AdvancedProgressIndicator(
+                size: 48,
+                progress: 0.5,
+                customLabel: 'Fetching...',
+                labelStyle: ProgressLabelStyle.custom,
+              ),
+            )
+          else
+            _buildNotificationsList(provider, theme),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                _buildGradientBlob(
+                  size: 220,
+                  color: theme.primaryColor.withValues(alpha: 0.05),
+                ),
+                Icon(
+                  Icons.notifications_active_outlined,
+                  size: 100,
+                  color: theme.primaryColor.withValues(alpha: 0.2),
+                ),
+                Positioned(
+                  bottom: 30,
+                  right: 30,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: theme.scaffoldBackgroundColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 20,
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.check_circle_rounded,
+                      color: theme.primaryColor,
+                      size: 28,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            Text(
+              'Zero Distractions',
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 48),
+              child: Text(
+                'Your notification center is as clear as your focus today.',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.hintColor,
+                  height: 1.5,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackgroundDecor(BuildContext context) {
+    final theme = Theme.of(context);
+    return Stack(
+      children: [
+        Positioned(
+          top: -150,
+          right: -100,
+          child: _buildGradientBlob(
+            size: 400,
+            color: theme.primaryColor.withValues(alpha: 0.08),
+          ),
+        ),
+        Positioned(
+          bottom: 100,
+          left: -150,
+          child: _buildGradientBlob(
+            size: 500,
+            color: theme.colorScheme.secondary.withValues(alpha: 0.05),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGradientBlob({required double size, required Color color}) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          colors: [
+            color,
+            color.withValues(alpha: 0),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNotificationsList(NotificationProvider provider, ThemeData theme) {
+    if (provider.notifications.isEmpty) {
+      return CustomScrollView(
+        slivers: [_buildEmptyState(context)],
+      );
+    }
+
+    final grouped = provider.groupedNotifications;
+    final groupTitles = grouped.keys.toList();
+
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
+      itemCount: groupTitles.length,
+      itemBuilder: (context, index) {
+        final groupTitle = groupTitles[index];
+        final items = grouped[groupTitle]!;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 24, 8, 16),
+              child: Row(
+                children: [
+                  Text(
+                    groupTitle,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.primaryColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '${items.length}',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ...items.map(
+              (notif) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: NotificationItem(
+                  notification: notif,
+                  onTap: () => provider.handleTap(context, notif),
+                  onDelete: () => provider.deleteNotification(notif.id),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _confirmClearAll(
+    BuildContext context,
+    NotificationProvider provider,
+  ) async {
+    final theme = Theme.of(context);
+
+    final result = await showGeneralDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'Clear All',
+      transitionDuration: const Duration(milliseconds: 400),
+      pageBuilder: (context, anim1, anim2) {
+        return Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 32),
+            padding: const EdgeInsets.all(28),
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(32),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.3),
+                  blurRadius: 40,
+                  offset: const Offset(0, 20),
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.error.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.delete_sweep_rounded,
+                      color: theme.colorScheme.error,
+                      size: 48,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Empty Inbox?',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'All notifications will be permanently removed from your history.',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.hintColor,
+                      height: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            'Keep them',
+                            style: TextStyle(
+                              color: theme.colorScheme.onSurface,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.colorScheme.error,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: const Text(
+                            'Clear All',
+                            style: TextStyle(fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (context, anim1, anim2, child) {
+        return ScaleTransition(
+          scale: CurvedAnimation(parent: anim1, curve: Curves.elasticOut),
+          child: FadeTransition(opacity: anim1, child: child),
+        );
+      },
+    );
+
+    if (result == true) {
+      HapticFeedback.heavyImpact();
+      await provider.markAllAsRead();
+      if (context.mounted) {
+        AppSnackbar.success('Sweeped', description: 'Notifications cleared');
+      }
+    }
+  }
+}
